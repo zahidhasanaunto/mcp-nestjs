@@ -1,5 +1,5 @@
 export interface McpExecutionContext {
-  getSessionId(): string;
+  getSessionId(): string | undefined;
   getArgs(): Record<string, any>;
   getRequest(): any;
   getToolName(): string;

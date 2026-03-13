@@ -1,6 +1,6 @@
 {
   "name": "mcp-nestjs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "NestJS module for building Model Context Protocol (MCP) servers with decorators, auto-discovery, and built-in playground",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

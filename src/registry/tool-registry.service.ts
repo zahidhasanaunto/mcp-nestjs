@@ -59,7 +59,7 @@ export class ToolRegistryService {
   async executeTool(
     name: string,
     args: Record<string, any>,
-    sessionId: string,
+    sessionId?: string,
     request?: any,
   ): Promise<ToolResult> {
     const registration = this.tools.get(name);
@@ -83,7 +83,7 @@ export class ToolRegistryService {
     }
   }
 
-  async executeResource(uri: string, sessionId: string, request?: any): Promise<ResourceResult> {
+  async executeResource(uri: string, sessionId?: string, request?: any): Promise<ResourceResult> {
     // Try exact match first
     let registration = this.resources.get(uri);
 
@@ -108,7 +108,7 @@ export class ToolRegistryService {
   async executePrompt(
     name: string,
     args: Record<string, any>,
-    sessionId: string,
+    sessionId?: string,
     request?: any,
   ): Promise<PromptResult> {
     const registration = this.prompts.get(name);

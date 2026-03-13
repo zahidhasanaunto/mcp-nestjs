@@ -2,14 +2,14 @@ import { McpExecutionContext } from '../interfaces/guard.interfaces';
 
 export class McpExecutionContextImpl implements McpExecutionContext {
   constructor(
-    private readonly sessionId: string,
+    private readonly sessionId: string | undefined,
     private readonly args: Record<string, any>,
     private readonly request: any,
     private readonly toolName: string,
     private readonly type: 'tool' | 'resource' | 'prompt',
   ) {}
 
-  getSessionId(): string {
+  getSessionId(): string | undefined {
     return this.sessionId;
   }
 
