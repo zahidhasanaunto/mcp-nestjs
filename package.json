@@ -1,0 +1,78 @@
+{
+  "name": "mcp-nestjs",
+  "version": "1.0.0",
+  "description": "NestJS module for building Model Context Protocol (MCP) servers with decorators, auto-discovery, and built-in playground",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "dist/**/*.js.map"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "jest --forceExit --detectOpenHandles",
+    "test:cov": "jest --forceExit --detectOpenHandles --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "nestjs",
+    "mcp",
+    "model-context-protocol",
+    "tools",
+    "llm",
+    "ai",
+    "json-rpc",
+    "sse",
+    "decorator"
+  ],
+  "author": "zahidhasanaunto",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zahidhasanaunto/nestjs-mcp.git"
+  },
+  "homepage": "https://github.com/zahidhasanaunto/nestjs-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/zahidhasanaunto/nestjs-mcp/issues"
+  },
+  "type": "commonjs",
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^10.0.0 || ^11.0.0",
+    "reflect-metadata": "^0.1.13 || ^0.2.0",
+    "rxjs": "^7.0.0"
+  },
+  "optionalDependencies": {},
+  "devDependencies": {
+    "@nestjs/common": "^11.1.16",
+    "@nestjs/core": "^11.1.16",
+    "@nestjs/platform-express": "^11.1.16",
+    "@nestjs/testing": "^11.1.16",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.5.0",
+    "jest": "^30.3.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}

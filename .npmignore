@@ -1,0 +1,11 @@
+src/
+examples/
+coverage/
+node_modules/
+.git/
+.gitignore
+tsconfig.json
+jest.config.*
+**/*.spec.ts
+**/*.spec.js
+**/*.spec.d.ts
