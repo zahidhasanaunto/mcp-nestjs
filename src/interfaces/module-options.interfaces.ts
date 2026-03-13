@@ -35,6 +35,7 @@ export interface McpModuleOptions {
   guards?: McpGuardType[];
   session?: SessionConfig;
   playground?: boolean | PlaygroundConfig;
+  discovery?: boolean; // Enable decorator scanning (default: true). Set to false when only using manual tool registration.
 }
 
 export interface McpModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {

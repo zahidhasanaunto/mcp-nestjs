@@ -1,5 +1,5 @@
 import { DynamicModule, Module, Provider, Type } from '@nestjs/common';
-import { DiscoveryModule } from '@nestjs/core';
+import { DiscoveryModule, Reflector } from '@nestjs/core';
 import { MCP_MODULE_OPTIONS } from './mcp.constants';
 import { McpModuleOptions, McpModuleAsyncOptions } from './interfaces/module-options.interfaces';
 import { ToolRegistryService } from './registry/tool-registry.service';
@@ -21,10 +21,17 @@ function isPlaygroundEnabled(options: McpModuleOptions): boolean {
 export class McpModule {
   static forRoot(options: McpModuleOptions): DynamicModule {
     const controllers: Type[] = [];
+    const imports: any[] = [];
+    const needsDiscovery = options.discovery !== false;
+
+    if (needsDiscovery) {
+      imports.push(DiscoveryModule);
+    }
+
     const providers: Provider[] = [
       { provide: MCP_MODULE_OPTIONS, useValue: options },
+      Reflector,
       ToolRegistryService,
-      ToolDiscoveryService,
       SchemaAdapterService,
       SessionManagerService,
       {
@@ -51,13 +58,16 @@ export class McpModule {
     if (options.transports?.stdio?.enabled) {
       providers.push(StdioService);
     }
+    if (needsDiscovery) {
+      providers.push(ToolDiscoveryService);
+    }
     if (isPlaygroundEnabled(options)) {
       controllers.push(PlaygroundController);
     }
 
     return {
       module: McpModule,
-      imports: [DiscoveryModule],
+      imports,
       controllers,
       providers,
       exports: [ToolRegistryService, SessionManagerService, SchemaAdapterService],
@@ -72,6 +82,7 @@ export class McpModule {
         useFactory: options.useFactory,
         inject: options.inject || [],
       },
+      Reflector,
       ToolRegistryService,
       ToolDiscoveryService,
       SchemaAdapterService,

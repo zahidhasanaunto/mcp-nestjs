@@ -17,8 +17,8 @@ export class PlaygroundController {
   @Get()
   servePlayground(@Res() res: Response) {
     const html = PLAYGROUND_HTML
-      .replace('{{SERVER_NAME}}', this.options.name)
-      .replace('{{SERVER_VERSION}}', this.options.version);
+      .replaceAll('{{SERVER_NAME}}', this.options.name)
+      .replaceAll('{{SERVER_VERSION}}', this.options.version);
     res.type('text/html').send(html);
   }
 
