@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, Headers, Inject } from '@nestjs/common';
+import { Controller, Post, Req, Res, Headers, Inject, HttpCode } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ToolRegistryService } from '../registry/tool-registry.service';
 import { SessionManagerService } from './session-manager.service';
@@ -19,6 +19,7 @@ export class StreamableHttpController {
   }
 
   @Post('mcp')
+  @HttpCode(200)
   async handleMcp(
     @Req() req: Request,
     @Res() res: Response,

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Inject, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Inject, Res, HttpCode } from '@nestjs/common';
 import { Response } from 'express';
 import { ToolRegistryService } from '../registry/tool-registry.service';
 import { MCP_MODULE_OPTIONS } from '../mcp.constants';
@@ -48,6 +48,7 @@ export class PlaygroundController {
   }
 
   @Post('api/tools/call')
+  @HttpCode(200)
   async callTool(@Body() body: { name: string; arguments: Record<string, any> }) {
     const session = this.sessionManager.createSession();
     try {
@@ -58,6 +59,7 @@ export class PlaygroundController {
   }
 
   @Post('api/resources/read')
+  @HttpCode(200)
   async readResource(@Body() body: { uri: string }) {
     const session = this.sessionManager.createSession();
     try {
@@ -68,6 +70,7 @@ export class PlaygroundController {
   }
 
   @Post('api/prompts/get')
+  @HttpCode(200)
   async getPrompt(@Body() body: { name: string; arguments: Record<string, any> }) {
     const session = this.sessionManager.createSession();
     try {

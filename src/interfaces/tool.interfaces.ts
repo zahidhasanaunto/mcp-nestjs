@@ -43,4 +43,5 @@ export interface ToolResultContent {
 export interface ToolRegistration {
   definition: ToolDefinition;
   handler: (args: Record<string, any>, context: any) => Promise<ToolResult>;
+  guards?: any[];
 }

@@ -73,6 +73,19 @@ export class ToolRegistryService {
     const context = new McpExecutionContextImpl(sessionId, args, request, name, 'tool');
 
     try {
+      // Run guards (global + per-tool)
+      const allGuards = [...this.globalGuards, ...(registration.guards || [])];
+      for (const GuardClass of allGuards) {
+        const guard = new GuardClass();
+        const allowed = await guard.canActivate(context);
+        if (!allowed) {
+          return {
+            content: [{ type: 'text', text: `Access denied by guard: ${GuardClass.name || 'unknown'}` }],
+            isError: true,
+          };
+        }
+      }
+
       return await registration.handler(args, context);
     } catch (error: any) {
       this.logger.error(`Tool "${name}" execution failed: ${error.message}`);

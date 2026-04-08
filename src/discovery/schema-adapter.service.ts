@@ -49,8 +49,9 @@ export class SchemaAdapterService {
       return { type: 'object', properties: {} };
     }
 
-    // Check if it's a Zod type (has _def with typeName)
-    if (this.hasZod && schema._def?.typeName) {
+    // Check if it's a Zod type
+    // Zod v3: _def.typeName exists; Zod v4: _def.type is a string (e.g. 'object')
+    if (this.hasZod && schema._def && (schema._def.typeName || typeof schema._def.type === 'string')) {
       return this.zodAdapter!.convert(schema);
     }
 

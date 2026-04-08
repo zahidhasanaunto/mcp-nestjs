@@ -1,6 +1,6 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
-import { MCP_TOOL_METADATA, MCP_TOOL_GROUP_METADATA, MCP_RESOURCE_METADATA, MCP_PROMPT_METADATA } from '../mcp.constants';
+import { MCP_TOOL_METADATA, MCP_TOOL_GROUP_METADATA, MCP_RESOURCE_METADATA, MCP_PROMPT_METADATA, MCP_GUARD_METADATA } from '../mcp.constants';
 import { McpToolOptions, ToolRegistration, ToolResult, JsonSchema } from '../interfaces/tool.interfaces';
 import { McpResourceOptions, McpResourceTemplateOptions } from '../interfaces/resource.interfaces';
 import { McpPromptOptions } from '../interfaces/prompt.interfaces';
@@ -44,12 +44,17 @@ export class ToolDiscoveryService implements OnModuleInit {
       const prototype = Object.getPrototypeOf(instance);
       const groupPrefix = this.reflector.get<string | true>(MCP_TOOL_GROUP_METADATA, instance.constructor);
 
+      const classGuards = this.reflector.get<any[]>(MCP_GUARD_METADATA, instance.constructor) || [];
+
       const methodNames = this.metadataScanner.getAllMethodNames(prototype);
       for (const methodName of methodNames) {
         const toolOptions = this.reflector.get<McpToolOptions>(MCP_TOOL_METADATA, prototype[methodName]);
         if (!toolOptions) continue;
 
-        const registration = this.buildToolRegistration(instance, methodName, toolOptions, groupPrefix);
+        const methodGuards = this.reflector.get<any[]>(MCP_GUARD_METADATA, prototype[methodName]) || [];
+        const guards = [...classGuards, ...methodGuards];
+
+        const registration = this.buildToolRegistration(instance, methodName, toolOptions, groupPrefix, guards);
         this.registry.registerTool(registration);
       }
     }
@@ -60,6 +65,7 @@ export class ToolDiscoveryService implements OnModuleInit {
     methodName: string,
     options: McpToolOptions,
     groupPrefix?: string | true,
+    guards?: any[],
   ): ToolRegistration {
     // Determine tool name
     let prefix = '';
@@ -120,6 +126,7 @@ export class ToolDiscoveryService implements OnModuleInit {
         inputSchema,
       },
       handler,
+      guards: guards?.length ? guards : undefined,
     };
   }
 
